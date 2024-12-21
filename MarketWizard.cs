@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using ExileCore;
-using ExileCore.PoEMemory.MemoryObjects;
-using ExileCore.PoEMemory.Models;
-using ExileCore.Shared.Helpers;
+using ExileCore2;
+using ExileCore2.PoEMemory.Models;
+using ExileCore2.Shared.Helpers;
 using ImGuiNET;
 using MoreLinq;
-using SharpDX;
 using Vector2 = System.Numerics.Vector2;
 
 namespace MarketWizard;
@@ -26,10 +25,9 @@ public class MarketWizard : BaseSettingsPlugin<MarketWizardSettings>
     {
     }
 
-    public override Job Tick()
+    public override void Tick()
     {
         _getNinjaValue = GameController.PluginBridge.GetMethod<Func<BaseItemType, double>>("NinjaPrice.GetBaseItemTypeValue");
-        return null;
     }
 
     private double? GetNinjaRatio(BaseItemType wantedItem, BaseItemType offeredItem)
@@ -122,13 +120,13 @@ public class MarketWizard : BaseSettingsPlugin<MarketWizardSettings>
                     foreach (var pair in leftPointXyPairs)
                     {
                         drawList.AddRectFilled(pair[0] + cursorScreenPos, pair[1] with { Y = graphSizeY } + cursorScreenPos,
-                            (Color.Red with { A = 60 }).ToImgui());
+                            (Color.Red.ToImguiVec4(60).ToColor()).ToImgui());
                     }
 
                     foreach (var pair in rightPointXyPairs)
                     {
                         drawList.AddRectFilled(pair[0] + cursorScreenPos, pair[1] with { Y = graphSizeY } + cursorScreenPos,
-                            (Color.Green with { A = 60 }).ToImgui());
+                            (Color.Green.ToImguiVec4(60).ToColor()).ToImgui());
                     }
 
                     drawList.AddPolyline(ref leftPointsXy[0], leftPointsXy.Length, Color.Red.ToImgui(), ImDrawFlags.Closed, 1);
